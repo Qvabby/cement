@@ -17,6 +17,7 @@ namespace cement.Controllers
             return Ok();
         }
 
+        [Route("getUsers")]
         public async Task<IActionResult> GetAction()
         {
             var Users = await _userService.CreateUsersAsync(10);
