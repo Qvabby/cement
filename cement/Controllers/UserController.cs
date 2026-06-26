@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace cement.Controllers
 {
     [ApiController]
-    [Route("controller")]
+    [Route("[controller]")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -13,7 +13,7 @@ namespace cement.Controllers
             _userService = UserService;
         }
 
-        [Route("getUsers")]
+        [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
             var Users = await _userService.CreateUsersAsync(10);
