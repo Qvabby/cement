@@ -1,4 +1,5 @@
-﻿using cement.Interfaces;
+﻿using cement.Data;
+using cement.Interfaces;
 using cement.Models;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,12 @@ namespace cement.Services
 {
     internal class UserService : IUserService
     {
+        private readonly AppDbContext _dbContext;
+        public UserService(AppDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         private Random random = new Random();
         private List<string> names = new()
             {
@@ -22,7 +29,6 @@ namespace cement.Services
     "Asher", "Stella", "Nathan", "Everly", "Thomas", "Isla", "Leo", "Leah", "Isaiah", "Lucy",
     "Charles", "Paisley", "Josiah", "Natalie", "Hudson", "Naomi", "Christian", "Eliana", "Hunter", "Brooklyn"
             };
-
         private List<string> usernames = new()
             {
     "ShadowFox", "PixelKnight", "SilentWolf", "BlueComet", "NeonTiger", "LunarDrift", "CrimsonByte", "EchoStorm", "DarkFalcon", "NovaBlaze",
@@ -37,8 +43,36 @@ namespace cement.Services
     "ShadowByte", "CrimsonKnight", "NightTiger", "BrightPhoenix", "SwiftFalcon", "CloudFox", "IronDragon", "ElectricWizard", "NovaRider", "CosmicOtter"
             };
 
+        public async Task<ServiceResponse<User>> AddUserAsync(User user)
+        {
+            try
+            {
+                if (user == null)
+                    return await Task.FromResult(new ServiceResponse<User> { Data = null, Success = false, Description = "User is null" });
 
-            public async Task<ServiceResponse<List<User>>> CreateUsersAsync(int amount)
+                _dbContext.Users.Add(user);
+                return await Task.FromResult(new ServiceResponse<User> { Data = user, Success = true, Description = "User added successfully" });
+            }
+            catch (Exception e)
+            {
+                return new ServiceResponse<User> { Data = null, Success = false, Description = e.Message };
+            }
+        }
+        public async Task<ServiceResponse<List<User>>> GetUsersAsync()
+        {
+            try
+            {
+                var users = _dbContext.Users.ToList();
+                return await Task.FromResult(new ServiceResponse<List<User>> { Data = users, Success = true, Description = "Users retrieved successfully" });
+            }
+            catch (Exception e)
+            {
+
+                return await Task.FromResult(new ServiceResponse<List<User>> { Data = null, Success = false, Description = e.Message });
+            }
+        }
+
+        public async Task<ServiceResponse<List<User>>> CreateUsersAsync(int amount)
         {
             List<User> users = new List<User>();
             for (int i = 0; i < amount; i++)
@@ -51,7 +85,7 @@ namespace cement.Services
             return await Task.FromResult(new ServiceResponse<List<User>> { Data = users, Success = true, Description = $"Successfully Created {amount} fake users" });
         }
 
-            public async Task<ServiceResponse<User>> GetUserByNameAsync(string name, List<User> users)
+        public async Task<ServiceResponse<User>> GetUserByNameAsync(string name, List<User> users)
             {
                 List<User> usersWithUsername = users.Where(x => x.Name == name).ToList();
                 if (usersWithUsername.Count == 0)
@@ -68,7 +102,7 @@ namespace cement.Services
                 }
             }
 
-            public async Task<ServiceResponse<string>> GetUsernameAsync(int userId)
+        public async Task<ServiceResponse<string>> GetUsernameAsync(int userId)
             {
                 if (userId == 1)
                 {
@@ -80,7 +114,7 @@ namespace cement.Services
                 }
             }
 
-
-        }
+        
     }
+}
 

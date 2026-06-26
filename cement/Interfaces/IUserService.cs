@@ -10,5 +10,7 @@ namespace cement.Interfaces
         Task<ServiceResponse<string>> GetUsernameAsync(int userId);
         Task<ServiceResponse<List<User>>> CreateUsersAsync(int amount);
         Task<ServiceResponse<User>> GetUserByNameAsync(string name, List<User> users);
+        Task<ServiceResponse<User>> AddUserAsync(User user);
+        Task<ServiceResponse<List<User>>> GetUsersAsync();
     }
 }

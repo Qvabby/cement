@@ -14,10 +14,32 @@ namespace cement.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUsers()
+        public async Task<IActionResult> GetFakeUsers()
         {
             var Users = await _userService.CreateUsersAsync(10);
             return Ok(Users);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddUser([FromBody] cement.Models.User user)
+        {
+            var response = await _userService.AddUserAsync(user);
+            if (!response.Success)
+            {
+                return BadRequest(response.Description);
+            }
+            return Ok(response.Data);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUsers()
+        {
+            var response = await _userService.GetUsersAsync();
+            if (!response.Success)
+            {
+                return BadRequest(response.Description);
+            }
+            return Ok(response.Data);
         }
     }
 }
