@@ -4,7 +4,7 @@ using System.Text;
 
 namespace cement;
 
-internal class ServiceResponse<T> 
+public class ServiceResponse<T> 
 {
     public T Data { get; set; }
     public DateTime Timestamp { get; set; } = DateTime.Now;

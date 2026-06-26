@@ -5,7 +5,7 @@ using System.Text;
 
 namespace cement.Interfaces
 {
-    internal interface IUserService
+    public interface IUserService
     {
         Task<ServiceResponse<string>> GetUsernameAsync(int userId);
         Task<ServiceResponse<List<User>>> CreateUsersAsync(int amount);
