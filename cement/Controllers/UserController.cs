@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace cement.Controllers
 {
-    public class UserController : Controller
+    [ApiController]
+    [Route("userController")]
+    public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
         public UserController(IUserService UserService)
@@ -12,13 +14,13 @@ namespace cement.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            return Ok();
         }
 
         public async Task<IActionResult> GetAction()
         {
             var Users = await _userService.CreateUsersAsync(10);
-            return View(Users);
+            return Ok(Users);
         }
     }
 }
