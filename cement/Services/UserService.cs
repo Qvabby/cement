@@ -1,6 +1,7 @@
 ﻿using cement.Data;
 using cement.Interfaces;
 using cement.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -51,6 +52,7 @@ namespace cement.Services
                     return await Task.FromResult(new ServiceResponse<User> { Data = null, Success = false, Description = "User is null" });
 
                 _dbContext.Users.Add(user);
+                await _dbContext.SaveChangesAsync();
                 return await Task.FromResult(new ServiceResponse<User> { Data = user, Success = true, Description = "User added successfully" });
             }
             catch (Exception e)
@@ -62,7 +64,7 @@ namespace cement.Services
         {
             try
             {
-                var users = _dbContext.Users.ToList();
+                var users = await _dbContext.Users.ToListAsync();
                 return await Task.FromResult(new ServiceResponse<List<User>> { Data = users, Success = true, Description = "Users retrieved successfully" });
             }
             catch (Exception e)

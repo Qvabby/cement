@@ -1,4 +1,5 @@
 ﻿using cement.Interfaces;
+using cement.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace cement.Controllers
@@ -13,25 +14,25 @@ namespace cement.Controllers
             _userService = UserService;
         }
 
-        [HttpGet]
+        [HttpGet("getFakeUsers")]
         public async Task<IActionResult> GetFakeUsers()
         {
             var Users = await _userService.CreateUsersAsync(10);
             return Ok(Users);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddUser([FromBody] cement.Models.User user)
+        [HttpPost("addUser")]
+        public async Task<IActionResult> AddUser([FromBody] User user)
         {
             var response = await _userService.AddUserAsync(user);
             if (!response.Success)
             {
                 return BadRequest(response.Description);
-            }
+            }   
             return Ok(response.Data);
         }
 
-        [HttpGet]
+        [HttpGet("getUser")]
         public async Task<IActionResult> GetUsers()
         {
             var response = await _userService.GetUsersAsync();
