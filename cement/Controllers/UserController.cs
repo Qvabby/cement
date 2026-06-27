@@ -1,5 +1,6 @@
 ﻿using cement.Interfaces;
 using cement.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace cement.Controllers
@@ -32,7 +33,8 @@ namespace cement.Controllers
             return Ok(response.Data);
         }
 
-        [HttpGet("getUser")]
+        [Authorize]
+        [HttpGet("getUsers")]
         public async Task<IActionResult> GetUsers()
         {
             var response = await _userService.GetUsersAsync();
