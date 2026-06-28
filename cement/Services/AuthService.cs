@@ -32,9 +32,8 @@ namespace cement.Services
                     return new ServiceResponse<string>
                     { Success = false, Description = "User Not Found."};
 
-                if(user.Password != request.Password)
-                    return new ServiceResponse<string>
-                    { Success = false, Description = "Wrong Password." };
+                if (!BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
+                    return new ServiceResponse<string> { Success = false, Description = "Wrong password" };
 
                 var token = GenerateToken(user);
                 return new ServiceResponse<string>

@@ -11,6 +11,7 @@ namespace cement.Services
     internal class UserService : IUserService
     {
         private readonly AppDbContext _dbContext;
+       
         public UserService(AppDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -48,9 +49,10 @@ namespace cement.Services
         {
             try
             {
+                
                 if (user == null)
                     return await Task.FromResult(new ServiceResponse<User> { Data = null, Success = false, Description = "User is null" });
-
+                user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
                 _dbContext.Users.Add(user);
                 await _dbContext.SaveChangesAsync();
                 return await Task.FromResult(new ServiceResponse<User> { Data = user, Success = true, Description = "User added successfully" });
